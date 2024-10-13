@@ -42,7 +42,11 @@ func main() {
 		DB: db,
 	}
 
-	go startScrapping(db, 10, time.Minute)
+	timeBetweenRequests, err := time.ParseDuration(os.Getenv("TIME_B_REQ"))
+	if err != nil {
+		log.Fatalf("error while parsing duration %v", err)
+	}
+	go startScrapping(db, 10, timeBetweenRequests)
 
 	router := chi.NewRouter()
 
